@@ -11,6 +11,7 @@ public class PlayerDashState : PlayerState
     public override void Enter()
     {
         base.Enter();
+        SkillManager.Instance.clone.CreateCloneOnDashEnter();
         stateTimer = player.DashDuration;
         
     }
@@ -18,13 +19,14 @@ public class PlayerDashState : PlayerState
     public override void Exit()
     {
         base.Exit();
+        SkillManager.Instance.clone.CreateCloneOnDashExit();
         player.SetVelocity(0, rb.velocity.y);
     }
 
     public override void Update()
     {
         base.Update();
-        player.SetVelocity(player.DashSpeed * player.DashDirection, rb.velocity.y);
+        player.SetVelocity(player.DashSpeed * player.DashDirection, 0);
         if (player.IsWallDetected() && !player.IsGroundDetected())
             stateMachine.ChangeState(player.wallSlide);
         if (stateTimer < 0)

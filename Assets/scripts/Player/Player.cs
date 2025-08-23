@@ -1,11 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq.Expressions;
 using UnityEngine;
 
 public class Player : Entity
 {
-    public bool isBusy { get;private set; }
+    public bool isBusy { get; private set; }
     [Header("Attack details")]
     public Vector2[] AttackMovement;
     public float CounterAttackDuration;
@@ -15,16 +13,15 @@ public class Player : Entity
 
     [Header("Jump info")]
     public float Jumpforce;
-
+    //public int jumpCount;//跳跃次数
+    //public int maxJumpCount = 2;//最大跳跃次数
     [Header("Dash info")]
-    [SerializeField] private float DashCoolDown;//冲刺的cd
-    private float DashTime;//还差多少时间才能使用冲刺技能（小于0即可使用）
     public float DashSpeed;
     public float DashDuration;
     public float DashDirection { get; private set; }
 
 
-
+    public GameObject Sword { get; private set; }
 
 
     #region States
@@ -36,25 +33,31 @@ public class Player : Entity
     public PlayerDashState dashState { get; private set; }//冲刺
     public PlayerWallSlideState wallSlide { get; private set; }
     public PlayerWallJumpState wallJump { get; private set; }
-    public PlayerPrimaryAttack primaryAttack { get; private set; }
+    public PlayerPrimaryAttackState primaryAttack { get; private set; }
     public PlayerCounterAttack counterAttack { get; private set; }
+    public PlayerAimSwordState aimSword { get; private set; }//瞄准剑状态
+    public PlayerCatchSwordState catchSword { get; private set; }
 
+    public PlayerBlackholeState blackholeState { get; private set; }
     #endregion
     protected override void Awake()
     {
         base.Awake();
 
-        stateMachine=new PlayerStateMachine();
-        
+        stateMachine = new PlayerStateMachine();
+
         idleState = new PlayerIdleState(this, stateMachine, "Idle");
         moveState = new PlayerMoveState(this, stateMachine, "Move");
         jumpState = new PlayerJumpState(this, stateMachine, "Jump");
-        airState  = new PlayerAirState(this, stateMachine, "Jump");
+        airState = new PlayerAirState(this, stateMachine, "Jump");
         dashState = new PlayerDashState(this, stateMachine, "Dash");
         wallSlide = new PlayerWallSlideState(this, stateMachine, "WallSlide");
         wallJump = new PlayerWallJumpState(this, stateMachine, "Jump");
-        primaryAttack = new PlayerPrimaryAttack(this, stateMachine, "Attack");
+        primaryAttack = new PlayerPrimaryAttackState(this, stateMachine, "Attack");
         counterAttack = new PlayerCounterAttack(this, stateMachine, "CounterAttack");
+        aimSword = new PlayerAimSwordState(this, stateMachine, "AimSword");
+        catchSword = new PlayerCatchSwordState(this, stateMachine, "CatchSword");
+        blackholeState = new PlayerBlackholeState(this, stateMachine, "Jump");
     }
     protected override void Start()
     {
@@ -67,28 +70,38 @@ public class Player : Entity
         stateMachine.CurrentState.Update();//持续更新玩家
         CheckForDashInput();//希望在任何时刻都能冲刺闪避
 
+        if(Input.GetKeyDown(KeyCode.F))
+            SkillManager.Instance.crystal.CanUseSkill();
+
     }
     public void AnimationTrigger() => stateMachine.CurrentState.AnimationFinishTrigger();
     private void CheckForDashInput()
     {
-        DashTime-=Time.deltaTime;
         if (IsWallDetected())
             return;
-        if (Input.GetKeyDown(KeyCode.LeftShift) && DashTime<0)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && SkillManager.Instance.dash.CanUseSkill())
         {
-            DashTime = DashCoolDown;//更新cd
             DashDirection = Input.GetAxisRaw("Horizontal");
             if (DashDirection == 0)
                 DashDirection = facingDirection;
             stateMachine.ChangeState(dashState);
         }
     }
-    public IEnumerator BusyFor()
+    public IEnumerator BusyFor(float seconds)
     {
         isBusy = true;
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(seconds);
         isBusy = false;
     }
-    
-    
+
+    public void AssignSword(GameObject _Sword)
+    {
+        Sword = _Sword;
+    }
+    public void CatchSword()
+    {
+        stateMachine.ChangeState(catchSword);
+        Destroy(Sword);
+    }
+
 }

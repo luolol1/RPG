@@ -21,11 +21,18 @@ public class PlayerAirState : PlayerState
     public override void Update()
     {
         base.Update();
+        //if (player.jumpCount < player.maxJumpCount && Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    stateMachine.ChangeState(player.jumpState);
+        //}
         if (xInput != 0)
             player.SetVelocity(player.Movespeed * xInput * 0.8f, rb.velocity.y);
         if (player.IsWallDetected())
             stateMachine.ChangeState(player.wallSlide);
         if (player.IsGroundDetected())
+        {
             stateMachine.ChangeState(player.idleState);
+            //player.jumpCount = 0;
+        }
     }
 }

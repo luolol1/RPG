@@ -1,27 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class EntityFX : MonoBehaviour
 {
     private SpriteRenderer sr;
-    [SerializeField] private float FlashDuration;
-    [SerializeField] private Material hitMat;
-    private Material originalMat;
-    void Start()
+    [Header("Flash info")]
+    [SerializeField] private float flashDuration; //闪烁持续时间
+    [SerializeField] private Material hitMaterial;
+    private Material originalMaterial;
+    private void Start()
     {
         sr=GetComponentInChildren<SpriteRenderer>();
-        originalMat = sr.material;
+        originalMaterial = sr.material;
     }
-
-    public IEnumerator FlashFX()
+    private IEnumerator FlashFX()
     {
-        sr.material = hitMat;
-
-        yield return new WaitForSeconds(FlashDuration);
-
-        sr.material = originalMat;
+        sr.material = hitMaterial;
+        yield return new WaitForSeconds(flashDuration);
+        sr.material = originalMaterial;
     }
     private void RedColorblink()
     {

@@ -8,6 +8,7 @@ public class Entity : MonoBehaviour
     public Vector2 KnockbackDirection;
     private bool isKnocked;
     public float KnockbackDuration;
+
     [Header("Collision info")]
     public Transform AttackCheck;
     public float AttackRadius;
@@ -24,6 +25,7 @@ public class Entity : MonoBehaviour
     public Animator anim { get; private set; }
     public Rigidbody2D rb { get; private set; }
     public EntityFX FX { get; private set; }
+    public SpriteRenderer sr { get; private set; }
     #endregion
 
     protected virtual void Awake()
@@ -31,6 +33,7 @@ public class Entity : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
         FX = GetComponent<EntityFX>();
+        sr=GetComponentInChildren<SpriteRenderer>();
     }
 
     protected virtual void Start()
@@ -89,4 +92,12 @@ public class Entity : MonoBehaviour
             Flip();
     }
     #endregion
+
+    public void MakeTransparent(bool isTransparent)
+    {
+        if (isTransparent)
+            sr.color = Color.clear;
+        else
+            sr.color = Color.white;
+    }
 }

@@ -11,6 +11,7 @@ public class PlayerJumpState : PlayerState
     public override void Enter()
     {
         base.Enter();
+        //player.jumpCount++;
         player.SetVelocity(rb.velocity.x, player.Jumpforce);
     }
 
@@ -22,6 +23,11 @@ public class PlayerJumpState : PlayerState
     public override void Update()
     {
         base.Update();
+        //if(player.jumpCount<player.maxJumpCount && Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    player.SetVelocity(rb.velocity.x, player.Jumpforce);
+        //    player.jumpCount++;
+        //}
         if (xInput != 0)
             player.SetVelocity(player.Movespeed * xInput * 0.8f, rb.velocity.y);
         if (rb.velocity.y < 0)

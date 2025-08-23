@@ -21,6 +21,10 @@ public class PlayerGroundState : PlayerState
     public override void Update()
     {
         base.Update();
+        if (Input.GetKeyDown(KeyCode.R))
+            stateMachine.ChangeState(player.blackholeState);
+        if (Input.GetKeyDown(KeyCode.Mouse1) && HasNoSword())
+            stateMachine.ChangeState(player.aimSword);
         if (Input.GetKeyDown(KeyCode.Q))
             stateMachine.ChangeState(player.counterAttack);
         if (!player.IsGroundDetected())
@@ -31,5 +35,14 @@ public class PlayerGroundState : PlayerState
         {
             stateMachine.ChangeState(player.jumpState);
         }
+    }
+    private bool HasNoSword()
+    {
+        if(!player.Sword)
+        {
+            return true;
+        }
+        player.Sword.GetComponent<Sword_Skill_Manager>().ReturnSword();
+        return false;
     }
 }

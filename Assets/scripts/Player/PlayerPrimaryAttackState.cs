@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerPrimaryAttack : PlayerState
+public class PlayerPrimaryAttackState : PlayerState
 {
     private int ComboCounter;//连击次数
     private float LastAttackTime;//最后一次攻击的时间
     private float ComboWindow = 2;//连击间隔时间
-    public PlayerPrimaryAttack(Player _player, PlayerStateMachine _stateMachine, string _animBoolName) : base(_player, _stateMachine, _animBoolName)
+    public PlayerPrimaryAttackState(Player _player, PlayerStateMachine _stateMachine, string _animBoolName) : base(_player, _stateMachine, _animBoolName)
     {
     }
 
@@ -30,7 +30,7 @@ public class PlayerPrimaryAttack : PlayerState
         base.Exit();
         LastAttackTime=Time.time;
         ComboCounter++;
-        player.StartCoroutine("BusyFor");
+        player.StartCoroutine("BusyFor",0.15f);
     }
 
     public override void Update()

@@ -33,6 +33,7 @@ public class PlayerCounterAttack : PlayerState
                 {
                     stateTimer = 10;//任意一个较大的数，确保弹反动作能够完成。
                     player.anim.SetBool("SuccessfulCounterAttack", true);
+                    SkillManager.Instance.clone.CreateCloneOnCounterAttack(hit.transform);
                 }
             }
         }
