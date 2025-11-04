@@ -10,13 +10,16 @@ public class Player : Entity
 
     [Header("Move info")]
     public float Movespeed;
+    private float defaultMoveSpeed;
 
     [Header("Jump info")]
     public float Jumpforce;
+    private float defaultJumpForce;
     //public int jumpCount;//跳跃次数
     //public int maxJumpCount = 2;//最大跳跃次数
     [Header("Dash info")]
     public float DashSpeed;
+    private float defaultDashSpeed;
     public float DashDuration;
     public float DashDirection { get; private set; }
 
@@ -39,6 +42,7 @@ public class Player : Entity
     public PlayerCatchSwordState catchSword { get; private set; }
 
     public PlayerBlackholeState blackholeState { get; private set; }
+    public PlayerDeadState deadState { get; private set; }
     #endregion
     protected override void Awake()
     {
@@ -58,11 +62,15 @@ public class Player : Entity
         aimSword = new PlayerAimSwordState(this, stateMachine, "AimSword");
         catchSword = new PlayerCatchSwordState(this, stateMachine, "CatchSword");
         blackholeState = new PlayerBlackholeState(this, stateMachine, "Jump");
+        deadState = new PlayerDeadState(this, stateMachine, "Dead");
     }
     protected override void Start()
     {
         base.Start();
         stateMachine.Initialize(idleState);
+        defaultMoveSpeed = Movespeed;
+        defaultJumpForce = Jumpforce;
+        defaultDashSpeed = DashSpeed;
     }
     protected override void Update()
     {
@@ -73,6 +81,21 @@ public class Player : Entity
         if(Input.GetKeyDown(KeyCode.F))
             SkillManager.Instance.crystal.CanUseSkill();
 
+    }
+
+    public override void SlowEntityBy(float _SlowPercentage, float _Duration)
+    {
+        Movespeed=Movespeed * (1 - _SlowPercentage);
+        Jumpforce = Jumpforce * (1 - _SlowPercentage);
+        DashSpeed = DashSpeed * (1 - _SlowPercentage);
+        base.SlowEntityBy(_SlowPercentage, _Duration);
+    }
+    public override void ReturnDefaultSpeed()
+    {
+        base.ReturnDefaultSpeed();
+        Movespeed = defaultMoveSpeed;
+        Jumpforce = defaultJumpForce;
+        DashSpeed = defaultDashSpeed;
     }
     public void AnimationTrigger() => stateMachine.CurrentState.AnimationFinishTrigger();
     private void CheckForDashInput()
@@ -102,6 +125,12 @@ public class Player : Entity
     {
         stateMachine.ChangeState(catchSword);
         Destroy(Sword);
+    }
+
+    public override void Die()
+    {
+        base.Die();
+        stateMachine.ChangeState(deadState);
     }
 
 }

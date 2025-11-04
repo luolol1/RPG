@@ -11,6 +11,7 @@ public class EnemyState
     protected string animBoolName;
     protected float StateTimer;
     protected bool TriggerCalled;
+    
 
 
     public EnemyState(Enemy _enemyBase, EnemyStateMachine _stateMachine,string _animBoolName)
@@ -31,6 +32,7 @@ public class EnemyState
     public virtual void Exit() 
     {
         enemyBase.anim.SetBool(animBoolName, false);
+        enemyBase.LastAnimBoolName = animBoolName;
     }
     public void AnimationFinishTrigger()
     {

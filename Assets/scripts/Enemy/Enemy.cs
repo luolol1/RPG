@@ -23,6 +23,8 @@ public class Enemy : Entity
     [HideInInspector] public float LastAttackTime;
     public EnemyStateMachine stateMachine { get; private set; }
 
+    public string LastAnimBoolName;
+
     protected override void Awake()
     {
         base.Awake();
@@ -41,7 +43,16 @@ public class Enemy : Entity
         base.Update();
         stateMachine.CurrentState.Update();
     }
-
+    public override void SlowEntityBy(float _SlowPercentage, float _Duration)
+    {
+        MoveSpeed= MoveSpeed * (1 - _SlowPercentage);
+        base.SlowEntityBy(_SlowPercentage, _Duration);
+    }
+    public override void ReturnDefaultSpeed()
+    {
+        base.ReturnDefaultSpeed();
+        MoveSpeed = defaultMoveSpeed;
+    }
     public void FreezeTime(bool freeze)
     {
         if (freeze)
@@ -85,6 +96,7 @@ public class Enemy : Entity
         return false;
 
     }
+
     public virtual RaycastHit2D isPlayerDetected() => Physics2D.Raycast(WallCheck.position, Vector2.right * facingDirection, 50, whatIsPlayer);
     public override void OnDrawGizmos()
     {
@@ -93,4 +105,6 @@ public class Enemy : Entity
         Gizmos.DrawLine(transform.position, new Vector3(transform.position.x + attackDistance * facingDirection, transform.position.y));
     }
     public void AnimationTrigger() =>stateMachine.CurrentState.AnimationFinishTrigger();
+
+    
 }

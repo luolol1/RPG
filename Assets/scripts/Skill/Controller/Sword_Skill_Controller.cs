@@ -86,7 +86,8 @@ public class Sword_Skill_Manager : MonoBehaviour
                     {
                         if (hit.GetComponent<Enemy>() != null)
                         {
-                            hit.GetComponent<Enemy>().Damage();
+                            EnemyStats enemyStats = hit.GetComponent<EnemyStats>();
+                            player.stats.DoDamege(enemyStats);
                         }
                     }
                 }
@@ -199,7 +200,7 @@ public class Sword_Skill_Manager : MonoBehaviour
 
     private void SwordDamage(Enemy enemy)
     {
-        enemy.Damage();
+        player.stats.DoDamege(enemy.GetComponent<EnemyStats>());
         enemy.StartCoroutine("FreezeTimefor", FreezeTime);
     }
 

@@ -26,14 +26,20 @@ public class Entity : MonoBehaviour
     public Rigidbody2D rb { get; private set; }
     public EntityFX FX { get; private set; }
     public SpriteRenderer sr { get; private set; }
+
+    public CapsuleCollider2D cd { get; private set; }
+    public CharacterStats stats { get;private set; }
     #endregion
 
+    public System.Action OnFlip;
     protected virtual void Awake()
     {
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
         FX = GetComponent<EntityFX>();
         sr=GetComponentInChildren<SpriteRenderer>();
+        cd = GetComponent<CapsuleCollider2D>();
+        stats = GetComponent<CharacterStats>();
     }
 
     protected virtual void Start()
@@ -44,6 +50,16 @@ public class Entity : MonoBehaviour
     {
 
     }
+    //±ù¶³Ð§¹û¼õËÙ
+    public virtual void SlowEntityBy(float _SlowPercentage,float _Duration)
+    {
+        anim.speed = anim.speed * (1 - _SlowPercentage);
+        Invoke("ReturnDefaultSpeed", _Duration);
+    }
+    public virtual void ReturnDefaultSpeed()
+    {
+        anim.speed = 1;
+    }
     public void SetVelocity(float _xVelocity, float _yVelocity)
     {
         if (isKnocked)
@@ -51,7 +67,7 @@ public class Entity : MonoBehaviour
         rb.velocity = new Vector2(_xVelocity, _yVelocity);
         FlipController(_xVelocity);
     }
-    public virtual void Damage()
+    public virtual void DamageEffect()
     {
         Debug.Log(gameObject.name + " was damaged");
         FX.StartCoroutine("FlashFX");
@@ -83,6 +99,7 @@ public class Entity : MonoBehaviour
         facingDirection = facingDirection * -1;
         facingRight = !facingRight;
         transform.Rotate(0, 180, 0);
+        OnFlip?.Invoke();
     }
     public void FlipController(float _x)
     {
@@ -99,5 +116,9 @@ public class Entity : MonoBehaviour
             sr.color = Color.clear;
         else
             sr.color = Color.white;
+    }
+    public virtual void Die()
+    {
+
     }
 }
