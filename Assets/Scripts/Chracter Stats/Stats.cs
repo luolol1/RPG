@@ -22,7 +22,7 @@ public class Stats
     {
         baseValue = value;
     }
-    public void AddMoidfier(int _modifier)
+    public void AddModifier(int _modifier)
     {
         modifiers.Add(_modifier);
     }

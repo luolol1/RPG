@@ -92,7 +92,7 @@ MonoBehaviour:
   ItemImage: {fileID: 397609444515846296}
   ItemText: {fileID: 6004679619873146638}
   Item:
-    itemData: {fileID: 0}
+    Data: {fileID: 0}
     StackSize: 0
 --- !u!1 &6028078716659350162
 GameObject:

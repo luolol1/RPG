@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Clone_SKill_Controler : MonoBehaviour
+public class Clone_Skill_Controler : MonoBehaviour
 {
     private SpriteRenderer sr;
     private Animator anim;

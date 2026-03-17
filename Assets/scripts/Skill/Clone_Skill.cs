@@ -15,7 +15,7 @@ public class Clone_Skill : Skill
     public void CreateClone(Transform playerTransform, Vector3 xOffset)
     {
         GameObject clone = Instantiate(ClonePrefab);
-        clone.GetComponent<Clone_SKill_Controler>().SetTransform(playerTransform, CloneDuration, CanAttack, xOffset);
+        clone.GetComponent<Clone_Skill_Controler>().SetTransform(playerTransform, CloneDuration, CanAttack, xOffset);
     }
     public void CreateCloneOnDashEnter()
     {

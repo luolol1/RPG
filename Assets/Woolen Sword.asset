@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 48e504726355c0546a7a9d0eab4585ed, type: 3}
-  m_Name: Armor
+  m_Name: Woolen Sword
   m_EditorClassIdentifier: 
   itemType: 0
-  ItemName: Armor
-  Icon: {fileID: -1581127718, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
-  equipmentType: 1
+  ItemName: Woolen Sword
+  Icon: {fileID: 1025091068, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
+  equipmentType: 0

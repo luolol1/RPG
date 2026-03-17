@@ -88,11 +88,11 @@ public class Blackhole_Controller : MonoBehaviour
             float xOffset = 0;
             if (Random.Range(0, 100) < 50)
             {
-                xOffset = 2;
+                xOffset = 1.5f;
             }
             else
             {
-                xOffset = -2;
+                xOffset = -1.5f;
             }
 
             SkillManager.Instance.clone.CreateClone(EnemiesList[Random.Range(0, EnemiesList.Count)], new Vector3(xOffset, 0));

@@ -45,6 +45,8 @@ public class CharacterStats : MonoBehaviour
 
     public int currentHealth;
 
+    private bool IsDead=false;
+
     public System.Action OnHealthChange;
     private EntityFX FX;
     protected virtual void Start()
@@ -72,7 +74,7 @@ public class CharacterStats : MonoBehaviour
         if (isIgnited && IgnitedDamageTimer < 0)
         {
             DecreaseHealth(IgnitedDamage);
-            if (currentHealth < 0)
+            if (currentHealth < 0 && !IsDead)
                 Die();
             IgnitedDamageTimer = IgnitedDamageWindow;
         }
@@ -93,8 +95,6 @@ public class CharacterStats : MonoBehaviour
         //_target.TakeDamage(totalDamage);
         DoMagicDamage(_target);
     }
-
-    
 
     public virtual void DoMagicDamage(CharacterStats _target)
     {
@@ -220,6 +220,9 @@ public class CharacterStats : MonoBehaviour
     {
         //Debug.Log(_damage);
         DecreaseHealth(_damage);
+        GetComponent<Entity>().DamageImpact();
+
+        FX.StartCoroutine("FlashFX");
         if (currentHealth <= 0)
         {
             Die();

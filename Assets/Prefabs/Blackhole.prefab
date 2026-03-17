@@ -99,7 +99,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Blackhole_hotkey: {fileID: 6456972563013434157, guid: bfeeddd8865d76044ac7537211d4c7d1, type: 3}
-  KeyCodeList: 7100000077000000650000006600000074000000
+  KeyCodeList: 7100000077000000650000006900000074000000
+  isExitBlackhole: 0
   EnemiesList: []
 --- !u!58 &9123383703604852180
 CircleCollider2D:

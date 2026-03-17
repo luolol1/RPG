@@ -2,10 +2,10 @@ using UnityEngine;
 
 public enum SwordType
 {
-    Regular,
-    Bounce,
-    Pierce,
-    Spin
+    Regular,//³£¹æ
+    Bounce,//µ¯Ìø
+    Pierce, //´©Í¸
+    Spin //Ðý×ª
 }
 public class Sword_Skill : Skill
 {
